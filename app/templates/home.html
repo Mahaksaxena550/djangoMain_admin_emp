@@ -1,0 +1,103 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}
+<title>Home | Dynamic Registration</title>
+{% endblock title %}
+
+{% block content %}
+<div class="aurora-home">
+  <section class="aurora-hero">
+    <div class="aurora-sun"></div>
+    <div>
+      <div class="aurora-kicker">Final Project Showcase</div>
+      <h1 class="aurora-title">Dynamic</h1>
+      <p class="aurora-sub">
+        Aurora-style presentation layer for registration, dashboards, and query workflows with a cinematic neon UI direction.
+      </p>
+
+      <div class="tech-strip" aria-label="Tech stack">
+        <span class="tech-chip">DJ</span>
+        <span class="tech-chip">Py</span>
+        <span class="tech-chip">BS5</span>
+        <span class="tech-chip">SQL</span>
+        <span class="tech-chip">UI</span>
+      </div>
+
+      <div class="hero-actions">
+        <a href="{% url 'services' %}" class="hero-link">Documentation</a>
+        <a href="{% url 'about' %}" class="hero-link">Support</a>
+        <a href="{% url 'registration' %}" class="btn hero-cta">Live Preview →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="showcase-row">
+    <div class="show-card show-card--kanban">
+      <h5>Kanban</h5>
+      <div class="show-card-chip"><i class="bi bi-kanban"></i><span>Flow Board</span></div>
+      <div class="show-card-panel">
+        <div class="show-card-topline">
+          <span class="show-status">Active Sprint</span>
+          <span class="show-count">24 tasks</span>
+        </div>
+        <div class="show-card-lines" aria-hidden="true">
+          <span class="show-line w-92"></span>
+          <span class="show-line w-68"></span>
+          <span class="show-line w-84"></span>
+          <span class="show-line w-56"></span>
+        </div>
+        <div class="show-card-tags" aria-label="Kanban labels">
+          <span>Design</span>
+          <span>API</span>
+          <span>Review</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="show-card show-card--calendar">
+      <h5>Calendar</h5>
+      <div class="show-card-chip"><i class="bi bi-calendar3"></i><span>Schedule</span></div>
+      <div class="show-card-panel">
+        <div class="show-card-topline">
+          <span class="show-status">This Week</span>
+          <span class="show-count">8 events</span>
+        </div>
+        <div class="show-card-lines" aria-hidden="true">
+          <span class="show-line w-76"></span>
+          <span class="show-line w-90"></span>
+          <span class="show-line w-62"></span>
+          <span class="show-line w-80"></span>
+        </div>
+        <div class="show-card-tags" aria-label="Calendar categories">
+          <span>Demo</span>
+          <span>Meeting</span>
+          <span>Deadline</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="show-card show-card--chat">
+      <h5>Chat</h5>
+      <div class="show-card-chip"><i class="bi bi-chat-dots"></i><span>Support Desk</span></div>
+      <div class="show-card-panel">
+        <div class="show-card-topline">
+          <span class="show-status">Live Queue</span>
+          <span class="show-count">42 msgs</span>
+        </div>
+        <div class="show-card-lines" aria-hidden="true">
+          <span class="show-line w-88"></span>
+          <span class="show-line w-58"></span>
+          <span class="show-line w-72"></span>
+          <span class="show-line w-48"></span>
+        </div>
+        <div class="show-card-tags" aria-label="Chat states">
+          <span>Unread</span>
+          <span>Resolved</span>
+          <span>Live</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock content %}
+

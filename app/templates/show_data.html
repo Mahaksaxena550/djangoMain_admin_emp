@@ -1,0 +1,82 @@
+﻿{% extends 'base.html' %}
+
+
+{% block title %}
+    <title>Show data</title>
+{% endblock title %}
+{% comment %} {% block content %}
+    {{data}}
+
+{% for i in data %}
+
+<p>{{i.name}}</p>
+<p>{{i.email}}</p>
+<p>{{i.contact}}</p>
+<p>{{i.qualification}}</p>
+<p>{{i.gender}}</p>
+<p>{{i.state}}</p>
+    
+{% endfor %}
+    
+{% endblock content %} {% endcomment %}
+
+{% comment %} {% block content%}
+ 
+{{data}}  <br>
+{{data.name}} <br>
+{{data.email}}  <br>
+
+{% endblock content%} {% endcomment %}
+
+{% block content %}
+<div class="container mt-3 mt-md-4">
+    <div class="page-shell">
+        <div class="data-toolbar">
+            <div>
+                <h3 class="page-title h4 mb-0">Registered Users</h3>
+                <p class="text-secondary mb-0 small">Live view of submitted records in responsive table format.</p>
+            </div>
+            <span class="data-badge"><i class="bi bi-database-check"></i> Dataset View</span>
+        </div>
+        <div class="table-wrap-premium">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                    <th>S.no</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Qualification</th>
+                        <th>Gender</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for i in data %}
+                    <tr>
+                        <td><span class="serial-pill">{{ forloop.counter }}</span></td>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.email }}</td>
+                        <td>{{ i.contact }}</td>
+                        <td>{{ i.qualification }}</td>
+                        <td>{{ i.gender }}</td>
+                        <td>{{ i.state }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-danger">No data found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+

@@ -1,0 +1,98 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}
+<title>Login</title>
+{% endblock title %}
+
+{% block body_class %}public-theme login-page{% endblock body_class %}
+
+{% block content %}
+<div class="login-wrapper">
+    <div class="glass-card">
+        <h2 class="text-center mb-4 fw-bold">Welcome Back</h2>
+{{pqr}}
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Username -->
+            <div class="form-floating mb-3">
+                <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+                <label>Email</label>
+            </div>
+
+            <!-- Password with Eye Icon -->
+            <div class="form-floating mb-2 position-relative">
+                <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                <label>Password</label>
+                <i class="bi bi-eye eye-icon" onclick="togglePassword()"></i>
+            </div>
+
+            <!-- Forgot Password -->
+            <div class="text-end mb-3">
+                <small>
+                    <a href="#" class="text-white text-decoration-none">
+                        Forgot password?
+                    </a>
+                </small>
+            </div>
+
+            <button class="btn btn-light w-100 fw-bold py-2" type="submit">Login</button>
+        </form>
+
+        <!-- Register -->
+        <p class="text-center mt-4 mb-0">
+            <small>
+                Not registered?
+                <a href="{% url 'registration' %}" class="text-white fw-semibold text-decoration-none">
+                    Create account
+                </a>
+            </small>
+        </p>
+    </div>
+</div>
+
+<script>
+function togglePassword(){
+    const p = document.getElementById("password");
+    const icon = document.querySelector(".eye-icon");
+
+    if(p.type === "password"){
+        p.type = "text";
+        icon.classList.replace("bi-eye","bi-eye-slash");
+    }else{
+        p.type = "password";
+        icon.classList.replace("bi-eye-slash","bi-eye");
+    }
+}
+</script>
+
+<style>
+/* Final forced glass style for login card */
+body.public-theme.login-page .glass-card{
+  border: 1px solid rgba(150,168,248,.22) !important;
+  background:
+    radial-gradient(circle at 22% 10%, rgba(118,97,255,.12), transparent 46%),
+    radial-gradient(circle at 84% 18%, rgba(86,203,255,.10), transparent 44%),
+    linear-gradient(180deg, rgba(8,11,21,.28), rgba(6,9,17,.32)) !important;
+  box-shadow:
+    0 14px 26px rgba(2,3,10,.10),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    inset 0 -1px 0 rgba(255,255,255,.025),
+    0 0 0 1px rgba(255,255,255,.015) !important;
+  backdrop-filter: blur(16px) saturate(1.05) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.05) !important;
+}
+
+body.public-theme.login-page .glass-card .form-control{
+  background: rgba(8,12,22,.24) !important;
+  border-color: rgba(164,181,255,.20) !important;
+  color: #f3f7ff !important;
+}
+
+body.public-theme.login-page .glass-card .form-control:focus{
+  background: rgba(8,12,22,.30) !important;
+  border-color: rgba(182,199,255,.30) !important;
+}
+</style>
+{% endblock content %}
+

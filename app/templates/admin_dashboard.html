@@ -1,0 +1,512 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}
+<title>Admin Dashboard</title>
+{% endblock title %}
+
+{% block body_class %}admin-theme{% endblock body_class %}
+
+{% block nav %}{% endblock nav %}
+
+{% block content %}
+
+{% if msg %}
+<div class="alert alert-info text-center fw-semibold shadow-sm rounded-3">
+    {{ msg }}
+</div>
+{% endif %}
+
+<div class="container-fluid">
+<div class="row min-vh-100">
+
+<!-- ================= SIDEBAR ================= -->
+<div class="col-md-3 col-lg-2 sidebar d-flex flex-column p-0">
+
+    <div class="sidebar-header text-center py-4">
+        {% if data %}
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+             width="60" class="mb-2">
+        <h6 class="mb-0">Admin Panel</h6>
+        <small class="text-light">{{ data.name }}</small>
+        {% endif %}
+    </div>
+
+    <ul class="nav flex-column mt-3 px-2">
+        <li class="nav-item">
+            <a href="{% url 'add_dept' %}" class="nav-link sidebar-link">
+                <i class="bi bi-building"></i> Add Department
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'add_emp' %}" class="nav-link sidebar-link">
+                <i class="bi bi-person-plus"></i> Add Employee
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'show_dept' %}" class="nav-link sidebar-link">
+                <i class="bi bi-list-task"></i> Show Departments
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'show_emp' %}" class="nav-link sidebar-link">
+                <i class="bi bi-people"></i> Show Employees
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'show_query' %}" class="nav-link sidebar-link">
+                <i class="bi bi-chat-dots"></i> Employee Queries
+            </a>
+        </li>
+    </ul>
+
+    <div class="mt-auto p-3">
+        <a href="{% url 'logout' %}" class="btn btn-danger w-100 rounded-pill">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+    </div>
+</div>
+
+<!-- ================= MAIN CONTENT ================= -->
+<div class="col-md-9 col-lg-10 bg-light p-4">
+
+{% if not add_emp and not add_dept and not show_dept and not edit_dept and not show_emp and not edit_emp and not show_query and not reply %}
+<div class="card dashboard-card">
+    <h4 class="mb-3"><i class="bi bi-speedometer2"></i> Admin Dashboard</h4>
+    <p class="text-muted mb-4">Choose an option from the left menu to manage departments, employees, and queries.</p>
+    <div class="row g-3">
+        <div class="col-md-6 col-xl-3">
+            <div class="p-3 rounded-3 border border-secondary-subtle bg-dark bg-opacity-25">
+                <div class="small text-secondary mb-1">Department Management</div>
+                <div class="fw-semibold">Add / Edit / Show Departments</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="p-3 rounded-3 border border-secondary-subtle bg-dark bg-opacity-25">
+                <div class="small text-secondary mb-1">Employee Management</div>
+                <div class="fw-semibold">Add / Edit / Show Employees</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="p-3 rounded-3 border border-secondary-subtle bg-dark bg-opacity-25">
+                <div class="small text-secondary mb-1">Queries</div>
+                <div class="fw-semibold">Review & Reply to Employee Queries</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="p-3 rounded-3 border border-secondary-subtle bg-dark bg-opacity-25">
+                <div class="small text-secondary mb-1">Session</div>
+                <div class="fw-semibold">Use Logout when done</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if add_emp %}
+<div class="card dashboard-card">
+    <h4 class="text-center text-primary fw-bold mb-4">
+        <i class="bi bi-person-plus"></i> Add Employee
+    </h4>
+
+    <form method="POST" enctype="multipart/form-data" class="row g-3">
+        {% csrf_token %}
+
+        <div class="col-md-6">
+            <label class="form-label">Name</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Contact</label>
+            <input type="text" name="contact" class="form-control" required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Profile Image</label>
+            <input type="file" name="image" class="form-control">
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Department</label>
+            <select name="department" class="form-select" required>
+                <option value="">-- Select Department --</option>
+                {% for i in all_dept %}
+                <option value="{{ i.id }}">{{ i.department }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" name="cpassword" class="form-control" required>
+        </div>
+
+        <div class="col-12 text-center">
+            <button class="btn btn-primary px-5 rounded-pill mt-3">
+                Add Employee
+            </button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+{% if add_dept %}
+<div class="card dashboard-card">
+    <h4 class="text-center text-success fw-bold mb-4">
+        <i class="bi bi-building"></i> Add Department
+    </h4>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Department Name</label>
+            <input type="text" name="department" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Department Code</label>
+            <input type="text" name="dept_code" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control"></textarea>
+        </div>
+
+        <button class="btn btn-success w-100 rounded-pill">
+            Add Department
+        </button>
+    </form>
+</div>
+{% endif %}
+
+{% if show_dept %}
+<div class="card dashboard-card">
+    <h4 class="text-center text-success fw-bold mb-4">
+        <i class="bi bi-list-task"></i> All Departments
+    </h4>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle text-center">
+            <thead class="table-success">
+                <tr>
+                    <th>S.No.</th>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in departments %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ d.department }}</td>
+                    <td>{{ d.dept_code }}</td>
+                    <td>{{ d.description }}</td>
+                    <td>
+                        <a href="{% url 'edit_dept' pk=d.id %}" class="btn btn-sm btn-primary">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        <a href="{% url 'delete_dept' d.id %}" class="btn btn-sm btn-danger delete-confirm"
+                           data-item="department">
+                            <i class="bi bi-trash"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">No Data</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% if edit_dept %}
+<div class="card dashboard-card">
+    <h4 class="text-center text-warning fw-bold mb-4">
+        <i class="bi bi-pencil-square"></i> Edit Department
+    </h4>
+
+    <form method="POST" action="{% url 'update_dept' dept.id %}">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Department Name</label>
+            <input type="text" name="department"
+                   value="{{ dept.department }}"
+                   class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Department Code</label>
+            <input type="text" name="dept_code"
+                   value="{{ dept.dept_code }}"
+                   class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description"
+                      class="form-control">{{ dept.description }}</textarea>
+        </div>
+
+        <button class="btn btn-warning w-100 rounded-pill">
+            Update Department
+        </button>
+    </form>
+</div>
+{% endif %}
+
+
+{% if show_emp %}
+<div class="card dashboard-card">
+    <h4 class="text-center text-primary fw-bold mb-4">
+        <i class="bi bi-people"></i> All Employees
+    </h4>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle text-center">
+            <thead class="table-primary">
+                <tr>
+                    <th>S.no.</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Department</th>
+                    <th>Code</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in employees %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        {% if e.image %}
+                        <img src="{{ e.image.url }}" class="rounded-circle" width="45" height="45">
+                        {% else %} N/A {% endif %}
+                    </td>
+                    <td>{{ e.name }}</td>
+                    <td>{{ e.email }}</td>
+                    <td>{{ e.contact }}</td>
+                    <td>{{ e.department }}</td>
+                    <td>{{ e.d_code }}</td>
+                    <td>
+                        <a href="{% url 'edit_emp' pk=e.id %}" class="btn btn-sm btn-primary">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        <a href="{% url 'delete' e.id %}" class="btn btn-sm btn-danger delete-confirm"
+                           data-item="employee">
+                            <i class="bi bi-trash"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8">No Employees Found</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% if edit_emp %}
+<div class="card dashboard-card">
+    <h4 class="text-center text-warning fw-bold mb-4">
+        <i class="bi bi-pencil-square"></i> Edit Employee
+    </h4>
+
+    <form method="POST" action="{% url 'update_emp' emp.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label">Name</label>
+                <input type="text" name="name" value="{{ emp.name }}" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" value="{{ emp.email }}" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Contact</label>
+                <input type="text" name="contact" value="{{ emp.contact }}" class="form-control" required>
+            </div>
+
+            <!-- âœ… Department Name -->
+            <div class="col-md-6">
+                <label class="form-label">Department</label>
+                <select name="department" class="form-select" required>
+                    <option value="">-- Select Department --</option>
+                    {% for d in departments %}
+                    <option value="{{ d.id }}"
+                        {% if d.department == emp.department %}selected{% endif %}>
+                        {{ d.department }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- âœ… Department Code (auto-filled, readonly) -->
+            <div class="col-md-6">
+                <label class="form-label">Department Code</label>
+                <input type="text" name="d_code" value="{{ emp.d_code }}"
+                       class="form-control" readonly>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Profile Image</label>
+                <input type="file" name="image" class="form-control">
+            </div>
+
+            <div class="col-12 text-center">
+                <button class="btn btn-warning px-5 rounded-pill mt-3">
+                    Update Employee
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+
+{% if show_query %}
+<div class="card dashboard-card">
+    <h4 class="text-center text-warning fw-bold mb-4">
+        <i class="bi bi-chat-dots-fill"></i> Employee Queries
+    </h4>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle text-center">
+            <thead class="table-warning">
+                <tr>
+                    <th>S.No.</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for q in queries %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+
+                    <td class="fw-semibold">
+                        {{ q.name }}
+                    </td>
+
+                    <td>
+                        <span class="text-muted">{{ q.email }}</span>
+                    </td>
+
+                    <td>
+                        <span class="badge bg-warning text-dark">
+                            {{ q.subject }}
+                        </span>
+                    </td>
+
+                    <td class="text-start">
+                        {{ q.message|truncatechars:60 }}
+                    </td>
+
+                    <td>
+                        <a href="{% url 'reply_query' q.id %}"
+                           class="btn btn-sm btn-warning rounded-pill px-3">
+                            <i class="bi bi-reply"></i> Reply
+                        </a>
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-muted fw-semibold">
+                        No queries found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+
+{% if reply %}
+<div class="card dashboard-card col-md-6 mx-auto">
+    <h4 class="text-center text-warning fw-bold mb-4">
+        <i class="bi bi-reply"></i> Reply to Query
+    </h4>
+
+    <form method="POST" action="{% url 'reply_query' id %}">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Reply Message</label>
+            <textarea name="reply" class="form-control" rows="4"
+                      placeholder="Type your reply here..." required></textarea>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-warning px-5 rounded-pill">
+                <i class="bi bi-send"></i> Send Reply
+            </button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+</div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".delete-confirm").forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      const url = this.getAttribute("href");
+      const item = this.getAttribute("data-item") || "item";
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "This will permanently delete the " + item + ".",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#e11d48",
+        cancelButtonColor: "#334155",
+        confirmButtonText: "Yes, delete it",
+        cancelButtonText: "Cancel",
+        background: "#0f172a",
+        color: "#e2e8f0"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = url;
+        }
+      });
+    });
+  });
+});
+</script>
+
+{% endblock content %}

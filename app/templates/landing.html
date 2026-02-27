@@ -1,0 +1,43 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}
+    <title>Contact | Dynamic Registration</title>
+{% endblock title %}
+
+{% block content %}
+<div class="contact-aurora">
+  <div class="contact-wrap">
+    <section class="contact-hero">
+      <span class="badge rounded-pill text-bg-dark border border-secondary-subtle">Contact</span>
+      <h1>Build a final project that looks production-ready.</h1>
+      <p>
+        Is page ko contact/overview section ke liye use kar sakte ho. Aurora-style dark glow theme ke saath project presentation consistent rahega.
+      </p>
+      <div class="contact-badges">
+        <span><i class="bi bi-phone me-1"></i> Responsive UI</span>
+        <span><i class="bi bi-stars me-1"></i> Aurora Theme</span>
+        <span><i class="bi bi-shield-check me-1"></i> Final Project Ready</span>
+      </div>
+    </section>
+    <aside class="contact-cards">
+      <div class="contact-card">
+        <h6><i class="bi bi-envelope me-2"></i>Email</h6>
+        <p><a href="#">support@dynamicregistration.local</a></p>
+      </div>
+      <div class="contact-card">
+        <h6><i class="bi bi-geo-alt me-2"></i>Location</h6>
+        <p>Project Demo / Campus Presentation</p>
+      </div>
+      <div class="contact-card">
+        <h6><i class="bi bi-lightning-charge me-2"></i>Quick Actions</h6>
+        <p>
+          <a href="{% url 'home' %}">Home</a> -
+          <a href="{% url 'registration' %}">Registration</a> -
+          <a href="{% url 'show_data' %}">Show Data</a>
+        </p>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock content %}
+
